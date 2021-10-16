@@ -1,0 +1,22 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "A simple todo api to use in any frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gustavonobreza@github.com/todo-list-api.git"
+  },
+  "keywords": [
+    "todo-list",
+    "api",
+    "nodejs",
+    "typescript",
+    "rest"
+  ],
+  "author": "Gustavo Alexandre Nobre Mesquita <gustavoalexandredev@gmail.com> (https://gustavonobreza.github.io/)",
+  "license": "ISC"
+}
