@@ -17,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/', async (req, res) => {
-  res.sendFile(resolve(__dirname, '..', 'brasilia.jpg'))
+  res.sendFile(resolve(__dirname, '..', 'assets', 'brasilia.jpg'))
 })
 
 app.get('/todos', async (req, res) => {
