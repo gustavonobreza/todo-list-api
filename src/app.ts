@@ -65,6 +65,12 @@ app.get('/todos/:id', async (req, res) => {
 app.delete('/todos/:id', async (req, res) => {
   const id = req.params.id
 
+  if (id.length !== 36) {
+    return res.status(404).json({
+      error: 'invalid id',
+    })
+  }
+
   if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
     return res.status(404).json({
       error: 'invalid id',
@@ -76,6 +82,7 @@ app.delete('/todos/:id', async (req, res) => {
   if (!exists) {
     return res.status(404).json({ error: 'todo not found' })
   }
+
   prisma.todo
     .delete({ where: { id } })
     .then(() => {
