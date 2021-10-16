@@ -93,6 +93,44 @@ app.delete('/todos/:id', async (req, res) => {
     })
 })
 
+app.put('/todos/:id', async (req, res) => {
+  const id = req.params.id
+
+  if (id.length !== 36) {
+    return res.status(404).json({
+      error: 'invalid id',
+    })
+  }
+
+  if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
+    return res.status(404).json({
+      error: 'invalid id',
+    })
+  }
+
+  const exists = await prisma.todo.count({ where: { id }, take: 1 })
+
+  if (!exists) {
+    return res.status(404).json({ error: 'todo not found' })
+  }
+
+  let { title, description } = req.body as IReqTodoInput
+
+  if (!title || title.length < 3) {
+    throw new Error('title is invalid!')
+  }
+  if (!description) {
+    description = ''
+  }
+
+  const updated = await prisma.todo.update({
+    where: { id },
+    data: { description, title, updatedAt: new Date().toISOString() },
+  })
+
+  return res.json(updated)
+})
+
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
     error: err?.message || err,
@@ -100,3 +138,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 export default () => app
+
+type IReqTodoInput = {
+  description: string
+  title: string
+}
