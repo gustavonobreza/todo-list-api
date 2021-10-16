@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index",
-    "clean": "rimraf dist",
+    "prebuild": "rimraf dist",
     "build": "tsc",
     "dev": "ts-node-dev index.ts",
     "migrations": "ts-node src/repositories/runMigrations.ts"

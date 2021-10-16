@@ -2,6 +2,6 @@ export default class Todo {
   id!: string
   title!: string
   description!: string
-  createdAt!: Date
-  updatedAt!: Date
+  createdAt!: Date | string
+  updatedAt!: Date | string
 }
