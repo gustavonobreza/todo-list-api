@@ -1,5 +1,4 @@
 import { config } from 'dotenv'
-import './repositories/database'
 import Application from './app'
 
 config()

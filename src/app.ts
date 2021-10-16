@@ -1,22 +1,94 @@
 import express, { NextFunction, Request, Response } from 'express'
+import { resolve } from 'path'
 import cors from 'express'
 import 'express-async-errors' // To resolve bugs in async router functions of express
-import db from './repositories/database'
-import TodoRepository from './repositories/TodoRepository'
+import { PrismaClient } from '@prisma/client'
+import { randomUUID } from 'crypto'
+
+const matchUUID = {
+  v4: /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+  v5: /^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+}
 
 const app = express()
+const prisma = new PrismaClient()
 
 app.use(cors())
-
-const todoRepository = new TodoRepository(db)
+app.use(express.json())
 
 app.get('/', async (req, res) => {
-  res.json({ data: await todoRepository.all() })
+  res.sendFile(resolve(__dirname, '..', 'brasilia.jpg'))
+})
+
+app.get('/todos', async (req, res) => {
+  const all = await prisma.todo.findMany()
+  res.json({ data: all })
+})
+
+app.post('/todos', async (req, res) => {
+  let { title, description } = req.body
+
+  if (!title || title.length < 3) {
+    throw new Error('title is required!')
+  }
+  if (!description) {
+    description = ''
+  }
+
+  const inserted = await prisma.todo.create({
+    data: {
+      id: randomUUID(),
+      title,
+      description,
+    },
+  })
+
+  res.json(inserted)
+})
+
+app.get('/todos/:id', async (req, res) => {
+  const id = req.params.id
+
+  if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
+    return res.status(404).json({
+      error: 'invalid id',
+    })
+  }
+
+  const todo = await prisma.todo.findUnique({ where: { id } })
+
+  if (!todo) return res.status(404).json({ error: 'todo not found' })
+
+  return res.status(200).json(todo)
+})
+
+app.delete('/todos/:id', async (req, res) => {
+  const id = req.params.id
+
+  if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
+    return res.status(404).json({
+      error: 'invalid id',
+    })
+  }
+
+  const exists = await prisma.todo.count({ where: { id }, take: 1 })
+
+  if (!exists) {
+    return res.status(404).json({ error: 'todo not found' })
+  }
+  prisma.todo
+    .delete({ where: { id } })
+    .then(() => {
+      return res.status(204).json({ ok: true })
+    })
+    .catch((e) => {
+      throw new Error(e?.message || String(e))
+    })
 })
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
-    error: err,
+    error: err?.message || err,
   })
 })
 
