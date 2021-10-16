@@ -8,8 +8,10 @@ specifiers:
   dotenv: ^10.0.0
   express: ^4.17.1
   express-async-errors: ^3.1.1
+  rimraf: ^3.0.2
   sqlite3: ^5.0.2
   ts-node-dev: ^1.1.8
+  tslib: ^2.3.1
   typescript: ^4.4.4
 
 dependencies:
@@ -17,7 +19,9 @@ dependencies:
   dotenv: 10.0.0
   express: 4.17.1
   express-async-errors: 3.1.1_express@4.17.1
+  rimraf: 3.0.2
   sqlite3: 5.0.2
+  tslib: 2.3.1
 
 devDependencies:
   '@types/cors': 2.8.12
@@ -1162,6 +1166,13 @@ packages:
     dependencies:
       glob: 7.2.0
 
+  /rimraf/3.0.2:
+    resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    hasBin: true
+    dependencies:
+      glob: 7.2.0
+    dev: false
+
   /safe-buffer/5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
     dev: false
@@ -1405,6 +1416,10 @@ packages:
       strip-bom: 3.0.0
       strip-json-comments: 2.0.1
     dev: true
+
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+    dev: false
 
   /tunnel-agent/0.6.0:
     resolution: {integrity: sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=}
