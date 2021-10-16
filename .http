@@ -1,0 +1,22 @@
+# @base = "localhost:3000/"
+
+###
+GET http://localhost:3000/todos HTTP/1.1
+
+###
+
+POST http://localhost:3000/todos HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Vamoooo...",
+  "description": "Amarelouuuu!"
+}
+
+###
+GET http://localhost:3000/todos/5692042d-4d92-421b-a881-ad54f4fc79db HTTP/1.1
+
+
+
+###
+DELETE http://localhost:3000/todos/5692042d-4d92-421b-a881-ad54f4fc79db HTTP/1.1
