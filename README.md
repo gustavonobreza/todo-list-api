@@ -37,3 +37,11 @@ It's implemented in NodeJS with Typescript, but it could be whatever technology 
   # YARN
   $ yarn start
 ```
+
+# Atention
+
+If you is using **`pnpm`** and to use (pre/pos)Script run that: ``pnpm config set enable-pre-post-scripts true``
+
+[Issue](https://github.com/pnpm/pnpm/issues/2891)
+
+[Documentation about it](https://pnpm.io/pt/cli/run#differences-with-npm-run)
