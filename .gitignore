@@ -119,3 +119,6 @@ dist
 
 db/*
 !db/.gitkeep
+
+.vscode/*
+prisma/db/db.sqlite
