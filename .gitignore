@@ -122,3 +122,4 @@ db/*
 
 .vscode/*
 prisma/db/db.sqlite
+pnpm-lock.yaml
