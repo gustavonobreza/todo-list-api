@@ -14,6 +14,7 @@ interface IServices {
   get: IHandlerService
   update: IHandlerService
   remove: IHandlerService
+  toggle: IHandlerService
 }
 
 type IReqTodoInput = {
@@ -126,6 +127,34 @@ export default function (prisma: PrismaClient): IServices {
         .catch((e) => {
           throw new Error(e?.message || String(e))
         })
+    },
+    toggle: async (req, res) => {
+      const id = req.params.id
+      if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
+        res.status(404).json({
+          error: 'invalid id',
+        })
+        return
+      }
+
+      const exists = await prisma.todo.findFirst({
+        where: { id },
+        select: { completed: true },
+      })
+
+      if (!exists) {
+        res.status(404).json({ error: 'todo not found' })
+        return
+      }
+
+      const todo = await prisma.todo.update({
+        where: { id },
+        data: {
+          completed: !exists.completed,
+        },
+      })
+
+      res.status(200).json(todo)
     },
   }
 }

@@ -10,11 +10,12 @@ export default (prisma: PrismaClient) => {
     res.sendFile(resolve('assets', 'brasilia.jpg'))
   })
 
-  const { all, create, get, remove, update } = TodoService(prisma)
+  const { all, create, get, remove, update, toggle } = TodoService(prisma)
 
   router.get('/todos', all)
   router.post('/todos', create)
   router.get('/todos/:id', get)
+  router.post('/todos/:id/toggle', toggle)
   router.delete('/todos/:id', remove)
   router.put('/todos/:id', update)
 
