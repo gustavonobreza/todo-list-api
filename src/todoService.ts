@@ -1,6 +1,6 @@
+import type { NextFunction, Request, Response } from 'express'
 import type { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
-import type { NextFunction, Request, Response } from 'express'
 
 type IHandlerService = (
   req: Request,
