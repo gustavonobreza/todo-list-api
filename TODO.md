@@ -1,5 +1,5 @@
 
-- [ ] Create description field for each task.
+- [x] Create description field for each task.
 - [x] Toggle the complete field of a task in a POST request.
 - [x] Create a target date to do the task.
 - [ ] Create lists and put tasks in these lists.
