@@ -127,3 +127,4 @@ yarn.lock
 package-lock.json
 
 *.http
+prisma/db/db.sqlite-journal
