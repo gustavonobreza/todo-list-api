@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import type { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
+import { validateTime } from './util/validateTime'
 
 type IHandlerService = (
   req: Request,
@@ -36,18 +37,20 @@ export default function (prisma: PrismaClient): IServices {
       res.json({ data: all })
     },
     create: async (req, res) => {
-      let { title, description } = req.body as IReqTodoInput
+      let { title, description, completed, target } = req.body as IReqTodoInput
       if (!title) {
         throw new Error('title is required!')
       }
-      if (!description) {
-        description = ''
-      }
+
+      target &&= validateTime(target)
+
       const inserted = await prisma.todo.create({
         data: {
           id: randomUUID(),
           title,
           description,
+          completed,
+          target: !!target ? new Date(target).toISOString() : undefined,
         },
       })
       res.json(inserted)
@@ -75,6 +78,7 @@ export default function (prisma: PrismaClient): IServices {
         })
         return
       }
+
       if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
         res.status(404).json({
           error: 'invalid id',
@@ -87,16 +91,20 @@ export default function (prisma: PrismaClient): IServices {
         res.status(404).json({ error: 'todo not found' })
         return
       }
-      let { title, description } = req.body as IReqTodoInput
-      if (!title || title.length < 3) {
-        throw new Error('title is invalid!')
-      }
-      if (!description) {
-        description = ''
-      }
+
+      let { title, description, completed, target } = req.body as IReqTodoInput
+
+      target &&= validateTime(target)
+
       const updated = await prisma.todo.update({
         where: { id },
-        data: { description, title, updatedAt: new Date().toISOString() },
+        data: {
+          description,
+          title,
+          updatedAt: new Date().toISOString(),
+          completed,
+          target,
+        },
       })
       res.json(updated)
     },
