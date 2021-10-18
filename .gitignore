@@ -125,3 +125,5 @@ prisma/db/db.sqlite
 pnpm-lock.yaml
 yarn.lock
 package-lock.json
+
+*.http
