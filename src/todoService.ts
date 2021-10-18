@@ -151,6 +151,7 @@ export default function (prisma: PrismaClient): IServices {
         where: { id },
         data: {
           completed: !exists.completed,
+          updatedAt: new Date().toISOString(),
         },
       })
 
