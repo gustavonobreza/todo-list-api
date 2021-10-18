@@ -18,8 +18,10 @@ interface IServices {
 }
 
 type IReqTodoInput = {
-  description: string
   title: string
+  description?: string | null
+  completed?: boolean
+  target?: string | null
 }
 
 const matchUUID = {
@@ -34,8 +36,8 @@ export default function (prisma: PrismaClient): IServices {
       res.json({ data: all })
     },
     create: async (req, res) => {
-      let { title, description } = req.body
-      if (!title || title.length < 3) {
+      let { title, description } = req.body as IReqTodoInput
+      if (!title) {
         throw new Error('title is required!')
       }
       if (!description) {
