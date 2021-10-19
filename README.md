@@ -19,13 +19,14 @@ It's implemented in NodeJS with Typescript, but it could be whatever technology 
 
 # Paths
 
-| Route      | Method | Description        |
-| :--------- | :----: | ------------------ |
-| /todos     |  GET   | Receive All Todos  |
-| /todos     |  POST  | Create a new todo  |
-| /todos/:id |  GET   | Receive todo by id |
-| /todos/:id | DELETE | Delete todo by id  |
-| /todos/:id |  PUT   | Update todo by id  |
+| Route             | Method | Description            |
+|-------------------|--------|------------------------|
+| /todos            | GET    | Receive All Todos      |
+| /todos            | POST   | Create a new todo      |
+| /todos/:id        | GET    | Receive todo by id     |
+| /todos/:id/toggle | POST   | Toggle completed field |
+| /todos/:id        | DELETE | Delete todo by id      |
+| /todos/:id        | PUT    | Update todo by id      |
 
 # Running App
 
