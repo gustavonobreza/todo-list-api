@@ -1,13 +1,12 @@
 import type { PrismaClient } from '@prisma/client'
 import { Router } from 'express'
-import { resolve } from 'path'
 import TodoService from './todoService'
 
 export default (prisma: PrismaClient) => {
   const router = Router()
 
   router.get('/', async (req, res) => {
-    res.sendFile(resolve('assets', 'brasilia.jpg'))
+    res.redirect('/todos')
   })
 
   const { all, create, get, remove, update, toggle } = TodoService(prisma)
