@@ -1,12 +1,13 @@
 import type { PrismaClient } from '@prisma/client'
 import { Router } from 'express'
+import HttpStatusCode from './errors/HttpCodes'
 import TodoService from './todoService'
 
 export default (prisma: PrismaClient) => {
   const router = Router()
 
-  router.get('/', async (req, res) => {
-    res.redirect('/todos')
+  router.all('/', async (req, res, next) => {
+    res.sendStatus(HttpStatusCode.NOT_IMPLEMENTED)
   })
 
   const { all, create, get, remove, update, toggle } = TodoService(prisma)
