@@ -15,4 +15,15 @@ model Todo {
   target      DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
+  isFavorite  Boolean   @default(false)
+
+  List   List?   @relation(fields: [listId], references: [id])
+  listId String?
+}
+
+model List {
+  id    String @id
+  Todos Todo[]
+
+  isFavorite Boolean @default(false)
 }
