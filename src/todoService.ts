@@ -2,6 +2,10 @@ import type { NextFunction, Request, Response } from 'express'
 import type { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { validateTime } from './util/validateTime'
+import { HttpError } from './errors/HttpError'
+import HttpCodes from './errors/HttpCodes'
+import { BadRequestExeption } from './errors/BadRequestExeption'
+import { NotFoundExeption } from './errors/NotFoundExeption'
 
 type IHandlerService = (
   req: Request,
@@ -39,7 +43,7 @@ export default function (prisma: PrismaClient): IServices {
     create: async (req, res) => {
       let { title, description, completed, target } = req.body as IReqTodoInput
       if (!title) {
-        throw new Error('title is required!')
+        throw new BadRequestExeption('title is required!', req)
       }
 
       target &&= validateTime(target)
@@ -58,38 +62,27 @@ export default function (prisma: PrismaClient): IServices {
     get: async (req, res) => {
       const id = req.params.id
       if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
       const todo = await prisma.todo.findUnique({ where: { id } })
       if (!todo) {
-        res.status(404).json({ error: 'todo not found' })
-        return
+        throw new NotFoundExeption('todo not found')
       }
       res.status(200).json(todo)
     },
     update: async (req, res) => {
       const id = req.params.id
       if (id.length !== 36) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
 
       if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
 
       const exists = await prisma.todo.count({ where: { id }, take: 1 })
       if (!exists) {
-        res.status(404).json({ error: 'todo not found' })
-        return
+        throw new NotFoundExeption('todo not found')
       }
 
       let { title, description, completed, target } = req.body as IReqTodoInput
@@ -111,22 +104,15 @@ export default function (prisma: PrismaClient): IServices {
     remove: async (req, res) => {
       const id = req.params.id
       if (id.length !== 36) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
       if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
 
       const exists = await prisma.todo.count({ where: { id }, take: 1 })
       if (!exists) {
-        res.status(404).json({ error: 'todo not found' })
-        return
+        throw new NotFoundExeption('todo not found')
       }
 
       prisma.todo
@@ -141,10 +127,7 @@ export default function (prisma: PrismaClient): IServices {
     toggle: async (req, res) => {
       const id = req.params.id
       if (!id.match(matchUUID.v4) && !id.match(matchUUID.v5)) {
-        res.status(404).json({
-          error: 'invalid id',
-        })
-        return
+        throw new BadRequestExeption('invalid id', req)
       }
 
       const exists = await prisma.todo.findFirst({
@@ -153,8 +136,7 @@ export default function (prisma: PrismaClient): IServices {
       })
 
       if (!exists) {
-        res.status(404).json({ error: 'todo not found' })
-        return
+        throw new NotFoundExeption('todo not found')
       }
 
       const todo = await prisma.todo.update({
