@@ -6,6 +6,10 @@
     "lib": [
       "es2021"
     ],
+    "typeRoots": [
+      "./node_modules/@types",
+      ".src/types"
+    ],
     "baseUrl": "./",
     "removeComments": true,
     "importHelpers": true,
