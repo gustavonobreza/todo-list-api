@@ -1,31 +1,9 @@
-import type { NextFunction, Request, Response } from 'express'
 import type { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { validateTime } from './util/validateTime'
 import { BadRequestExeption } from './errors/BadRequestExeption'
 import { NotFoundExeption } from './errors/NotFoundExeption'
-
-type IHandlerService = (
-  req: Request,
-  res: Response,
-  next?: NextFunction,
-) => Promise<void>
-
-interface IServices {
-  all: IHandlerService
-  create: IHandlerService
-  get: IHandlerService
-  update: IHandlerService
-  remove: IHandlerService
-  toggle: IHandlerService
-}
-
-type IReqTodoInput = {
-  title: string
-  description?: string | null
-  completed?: boolean
-  target?: string | null
-}
+import { IReqTodoInput, IServices } from './types'
 
 const matchUUID = {
   v4: /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
