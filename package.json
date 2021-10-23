@@ -7,7 +7,7 @@
     "start": "node dist/index",
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --cls --quiet --rs index.ts",
     "migrations": "ts-node src/repositories/runMigrations.ts"
   },
   "repository": {
